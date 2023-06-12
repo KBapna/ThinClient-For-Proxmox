@@ -19,53 +19,73 @@ After reboot
 
 open the terminal and execute
 
-<code>sudo nano /etc/lightdm/lightdm.conf</code>
+```code
+sudo nano /etc/lightdm/lightdm.conf
+```
 
-Navigate to the section containing "#greeter-hide-users=false" and remove the "#" symbol.
+Navigate to the section containing <code>"#greeter-hide-users=false"</code> and remove the "#" symbol.
 
 This adjustment ensures that the user list is visible instead of being hidden.
 
 Clone the script in your user's home directory and make it executable
 
-<code> git clone https://github.com/KBapna/ThinClient_For_Proxmox.git && cd ThinClient_For_Proxmox && cp thinclient /usr/local/bin/thinclient && chmod +x /usr/local/bin/thinclient </code>
-
+```code
+git clone https://github.com/KBapna/ThinClient_For_Proxmox.git && cd ThinClient_For_Proxmox && cp thinclient /usr/local/bin/thinclient && chmod +x /usr/local/bin/thinclient
+```
 Edit the script according to the comments in script
 
-<code>nano /usr/local/bin/thinclient</code>
+```code
+nano /usr/local/bin/thinclient
+```
 
 Execute the following code for dependecies
 
-<code>sudo apt install virt-viewer curl</code>
+```code
+sudo apt install virt-viewer curl
+```
 
 As we will use Debian's own UI to login we can customize the script accordingly for each user and keep it in their home directory.
 But first we will need to create those users. I will create a test users to access VM 101 for demo.
 
-<code>sudo adduser (username)</code>
+```code
+sudo adduser (username)
+```
 
-We can also setup passwordless login by editing the following file <code>/etc/pam.d/lightdm</code> and add the following line right after #%PAM-1.0 at the top of the file
+We can also setup passwordless login by editing the following file <code>/etc/pam.d/lightdm</code> and add the following line right after <code>#%PAM-1.0</code> at the top of the file
 
-<code>auth    sufficient  pam_succeed_if.so user ingroup nopasswdlogin</code>
+```code
+auth    sufficient  pam_succeed_if.so user ingroup nopasswdlogin
+```
 
-and create the group <code>sudo groupadd -r nopasswdlogin</code>
+and create the group 
+```code
+sudo groupadd -r nopasswdlogin
+```
 
 Now, for each no-password virtual session user, add them to the group nopasswdlogin
 
-<code>sudo gpasswd -a (username) nopasswdlogin</code>
-
+```code
+sudo gpasswd -a (username) nopasswdlogin
+```
 Setting up LXDE for AUTORUN
 
-<code>sudo mv /etc/xdg/lxsession/LXDE/autostart /etc/xdg/lxsession/LXDE/autostart.bak
+```code
+sudo mv /etc/xdg/lxsession/LXDE/autostart /etc/xdg/lxsession/LXDE/autostart.bak
 sudo touch /etc/xdg/lxsession/LXDE/autostart
 mkdir -p ~/.config/lxsession/LXDE
-cp /etc/xdg/lxsession/LXDE/autostart.bak ~/.config/lxsession/LXDE/autostart</code>
+cp /etc/xdg/lxsession/LXDE/autostart.bak ~/.config/lxsession/LXDE/autostart
+```
 
 Login to each user by SSH and execute the following
 
-<code>mkdir -p ~/.config/lxsession/LXDE
-nano ~/.config/lxsession/LXDE/autostart</code>
+```code
+mkdir -p ~/.config/lxsession/LXDE
+nano ~/.config/lxsession/LXDE/autostart
+```
 
 Contents of the file:
-
+```code
 @/usr/bin/bash /usr/local/bin/thinclient 101
+```
 
 Replace 100 with the VM ID you want this user to be launch.
