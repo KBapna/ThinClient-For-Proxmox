@@ -1,7 +1,8 @@
 # ThinClient_For_Proxmox
 Proxmox is a powerful server virtualization platform. This tutorial explains how to set up Proxmox on a server and access its virtual machines (VMs) from other nodes. It covers installation, configuration, and remote access, enabling seamless management and utilization of VMs across your network.
 # Prerequisites
-Debian image (ISO) Flashed to a USB
+1) PAM authenticated user with appropriate VM rights
+2) Debian image (ISO) Flashed to a USB
 # Steps
 Installing Debian Image on node
 1) Start the installation with the Debian Netinst image, choosing the "Install" option instead of "Graphical Install."
